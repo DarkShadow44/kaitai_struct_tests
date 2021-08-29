@@ -10,7 +10,7 @@ import io.kaitai.struct.languages.components.CppImportList
 
 class CSG(spec: TestSpec, provider: ClassTypeProvider) extends BaseGenerator(spec) {
   val compiler = new CCompiler(provider, RuntimeConfig())
-  val className = CCompiler.types2class(List(spec.id))
+  val className = spec.id.toLowerCase()
   val cppImportList = new CppImportList
   val translator = new CTranslator(provider, cppImportList)
 
@@ -39,10 +39,12 @@ class CSG(spec: TestSpec, provider: ClassTypeProvider) extends BaseGenerator(spe
   }
 
   def runParseCommon1(): Unit = {
+    out.puts(s"ksx_$className data;")
+    out.puts("ks_stream stream;")
+    out.puts("int error;")
     out.puts("FILE* file = fopen(\"src/" + spec.data + "\", \"r\");")
-    out.puts("ks_kaitai* stream = ks_stream_create_from_file(file);")
-	out.puts(s"ksx_$className data;")
-	out.puts(s"int error = ksx_read_${className}_from_stream(&stream, &data);")
+    out.puts("ks_stream_create_from_file(&stream, file);")
+	out.puts(s"error = ksx_read_${className}_from_stream(&stream, &data);")
   }
 
   override def footer() = {
@@ -88,5 +90,5 @@ class CSG(spec: TestSpec, provider: ClassTypeProvider) extends BaseGenerator(spe
   }
 
   def translateAct(x: Ast.expr) =
-    translator.translate(x).replace(Main.INIT_OBJ_NAME , "data")
+    translator.translate(x).replace(Main.INIT_OBJ_NAME , "data").replaceFirst("->", ".")
 }
