@@ -1,0 +1,11 @@
+#!/bin/sh
+
+. ./config
+
+rm -rf "$FORMATS_COMPILED_DIR"
+mkdir -p "$FORMATS_COMPILED_DIR"
+"$COMPILER_DIR/jvm/target/universal/stage/bin/kaitai-struct-compiler" -- \
+	--verbose all -t c -d "$FORMATS_COMPILED_DIR/c" \
+	--import-path "$FORMATS_REPO_DIR" \
+	--import-path "$FORMATS_KSY_DIR/ks_path" \
+	"$FORMATS_KSY_DIR"/*.ksy || :
