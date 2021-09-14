@@ -20,12 +20,17 @@ set(PREREQ_PATH prereq)
 
 include(${INC_PATH})
 
+set(PREREQ_SOURCES
+	${PREREQ_PATH}/operators.cpp
+)
+
 set(RUNTIME_SOURCES
 	${RUNTIME_SRC_PATH}/kaitaistruct.c
 )
 
 add_executable (ks_tests
 	${RUNTIME_SOURCES}
+	${PREREQ_SOURCES}
 	${DISPOSABLE_SOURCES}
 )
 

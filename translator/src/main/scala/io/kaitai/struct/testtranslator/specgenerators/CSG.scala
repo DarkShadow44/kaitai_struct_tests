@@ -16,8 +16,9 @@ class CSG(spec: TestSpec, provider: ClassTypeProvider) extends BaseGenerator(spe
 
   override def fileName(name: String): String = s"test_$name.cpp"
 
-  cppImportList.addSystem("boost/test/unit_test.hpp")
   cppImportList.addLocal(s"${spec.id}.h")
+  cppImportList.addLocal("operators.h")
+  cppImportList.addSystem("boost/test/unit_test.hpp")
   spec.extraImports.foreach(entry => cppImportList.addLocal(s"$entry.h"))
   cppImportList.addSystem("stdio.h")
 
@@ -90,7 +91,6 @@ class CSG(spec: TestSpec, provider: ClassTypeProvider) extends BaseGenerator(spe
   }
 
   def translateAct(x: Ast.expr) = {
-    out.puts("//" + x.toString())
     translator.translate(x).replace(Main.INIT_OBJ_NAME + "->", "").replaceFirst("->", ".")
   }
 }
