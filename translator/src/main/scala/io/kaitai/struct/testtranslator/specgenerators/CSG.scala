@@ -89,6 +89,8 @@ class CSG(spec: TestSpec, provider: ClassTypeProvider) extends BaseGenerator(spe
       out.result
   }
 
-  def translateAct(x: Ast.expr) =
-    translator.translate(x).replace(Main.INIT_OBJ_NAME , "data").replaceFirst("->", ".")
+  def translateAct(x: Ast.expr) = {
+    out.puts("//" + x.toString())
+    translator.translate(x).replace(Main.INIT_OBJ_NAME + "->", "").replaceFirst("->", ".")
+  }
 }
