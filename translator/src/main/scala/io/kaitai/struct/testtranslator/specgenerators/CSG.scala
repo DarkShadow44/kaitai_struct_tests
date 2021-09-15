@@ -33,8 +33,6 @@ class CSG(spec: TestSpec, provider: ClassTypeProvider) extends BaseGenerator(spe
   }
 
   override def runParseExpectError(exception: KSError): Unit = {
-    cppImportList.addKaitai("kaitai/exceptions.h")
-
     runParseCommon1()
     out.puts(s"BOOST_CHECK_EQUAL(error == 0, 0);")
   }
