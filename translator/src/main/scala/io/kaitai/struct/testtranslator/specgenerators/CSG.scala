@@ -42,9 +42,11 @@ class CSG(spec: TestSpec, provider: ClassTypeProvider) extends BaseGenerator(spe
   def runParseCommon1(): Unit = {
     out.puts(s"ksx_$className data;")
     out.puts("ks_stream stream;")
+    out.puts("ks_config config;")
     out.puts("int error;")
+    out.puts("ks_config_init(&config);")
     out.puts("FILE* file = fopen(\"src/" + spec.data + "\", \"r\");")
-    out.puts("ks_stream_init_from_file(&stream, file);")
+    out.puts("ks_stream_init_from_file(&stream, file, &config);")
     out.puts(s"error = ksx_read_${className}_from_stream(&stream, &data);")
   }
 
@@ -86,6 +88,7 @@ class CSG(spec: TestSpec, provider: ClassTypeProvider) extends BaseGenerator(spe
 
   override def results: String = {
     "// " + AUTOGEN_COMMENT + "\n\n" +
+      "#define KS_USE_ZLIB\n" +
       cppImportList.result + "\n" +
       out.result
   }
