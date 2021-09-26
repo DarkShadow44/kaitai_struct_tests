@@ -69,7 +69,7 @@ class CSG(spec: TestSpec, provider: ClassTypeProvider) extends BaseGenerator(spe
   def nullAssert(actual: Ast.expr): Unit = {
     val nullCheckStr = actual match {
       case Ast.expr.Attribute(x, Ast.identifier(attrName)) =>
-        translateAct(x) + s"->_is_null_$attrName()"
+        "!" + translateAct(x) + s"->_is_valid_$attrName"
     }
     out.puts(s"BOOST_CHECK($nullCheckStr);")
   }
