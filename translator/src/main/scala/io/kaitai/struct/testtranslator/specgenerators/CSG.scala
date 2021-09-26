@@ -69,7 +69,7 @@ class CSG(spec: TestSpec, provider: ClassTypeProvider) extends BaseGenerator(spe
   def nullAssert(actual: Ast.expr): Unit = {
     val nullCheckStr = actual match {
       case Ast.expr.Attribute(x, Ast.identifier(attrName)) =>
-        "!" + translateAct(x) + s"->_is_valid_$attrName"
+       fixup("!" + translator.anyField(x, s"_is_valid_$attrName"))
     }
     out.puts(s"BOOST_CHECK($nullCheckStr);")
   }
@@ -91,7 +91,9 @@ class CSG(spec: TestSpec, provider: ClassTypeProvider) extends BaseGenerator(spe
       out.result
   }
 
+  def fixup(s: String) : String = s.replace("->" + Main.INIT_OBJ_NAME, "").replaceFirst("->", ".")
+
   def translateAct(x: Ast.expr) = {
-    translator.translate(x).replace(Main.INIT_OBJ_NAME + "->", "").replaceFirst("->", ".")
+    fixup(translator.translate(x))
   }
 }
