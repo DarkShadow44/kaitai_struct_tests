@@ -29,7 +29,7 @@ inline bool operator==(const ks_bytes b1, const ks_bytes b2)
     ks_bytes_get_data(&b1, data1);
     ks_bytes_get_data(&b2, data2);
 
-    for (int i = 0; i < length1; i++)
+    for (uint64_t i = 0; i < length1; i++)
     {
         if (data1[i] != data2[i])
         {
@@ -55,7 +55,7 @@ inline std::ostream& operator<<(std::ostream& out, const ks_bytes b)
     ks_bytes_get_data(&b, data);
 
     bool first = true;
-    for (int i = 0; i < length; i++)
+    for (uint64_t i = 0; i < length; i++)
     {
         if (!first)
             ss << ", ";
