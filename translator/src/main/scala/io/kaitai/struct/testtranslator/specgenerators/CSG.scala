@@ -75,7 +75,6 @@ class CSG(spec: TestSpec, provider: ClassTypeProvider) extends BaseGenerator(spe
   }
 
   def trueArrayAssert(check: TestAssert, elType: DataType, elts: Seq[Ast.expr]): Unit = {
-    cppImportList.addLocal("helpers.h")
     val elTypeName = CCompiler.kaitaiType2NativeType(elType)
     val eltsStr = elts.map((x) => translator.translate(x)).mkString(", ")
     val actStr = translateAct(check.actual)
