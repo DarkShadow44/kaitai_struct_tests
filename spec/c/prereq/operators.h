@@ -74,8 +74,12 @@ inline std::ostream& operator<<(std::ostream& out, const ks_bytes b)
             temp1,                              \
             temp1 + sizeof(temp1) / sizeof(typ) \
         );                                      \
+        std::vector<typ> temp3(                 \
+            act->data,                          \
+            act->data + act->size               \
+        );                                      \
         BOOST_CHECK_EQUAL_COLLECTIONS(          \
-            act->begin(), act->end(),           \
+            temp3.begin(), temp3.end(),         \
             temp2.begin(), temp2.end()          \
         );                                      \
     }
