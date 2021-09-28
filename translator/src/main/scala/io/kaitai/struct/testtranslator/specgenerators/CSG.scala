@@ -16,7 +16,6 @@ class CSG(spec: TestSpec, provider: ClassTypeProvider) extends BaseGenerator(spe
 
   override def fileName(name: String): String = s"test_$name.cpp"
 
-  cppImportList.addLocal(s"${spec.id}.h")
   cppImportList.addLocal("operators.h")
   cppImportList.addSystem("boost/test/unit_test.hpp")
   spec.extraImports.foreach(entry => cppImportList.addLocal(s"$entry.h"))
@@ -94,6 +93,9 @@ class CSG(spec: TestSpec, provider: ClassTypeProvider) extends BaseGenerator(spe
     "// " + AUTOGEN_COMMENT + "\n\n" +
       "#define KS_USE_ZLIB\n" +
       "#define KS_DEPEND_ON_INTERNALS\n" +
+      "extern \"C\" {\n" +
+      "#include \"" + spec.id + ".h\"\n" +
+      "}\n" +
       cppImportList.result + "\n" +
       out.result
   }

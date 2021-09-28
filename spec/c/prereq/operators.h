@@ -1,4 +1,6 @@
+extern "C" {
 #include <kaitaistruct.h>
+}
 #include <iostream>
 #include <sstream>
 
