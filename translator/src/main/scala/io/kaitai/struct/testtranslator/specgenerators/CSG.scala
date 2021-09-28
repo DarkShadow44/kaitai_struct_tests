@@ -76,9 +76,16 @@ class CSG(spec: TestSpec, provider: ClassTypeProvider) extends BaseGenerator(spe
 
   def trueArrayAssert(check: TestAssert, elType: DataType, elts: Seq[Ast.expr]): Unit = {
     val elTypeName = CCompiler.kaitaiType2NativeType(elType)
-    val eltsStr = elts.map((x) => translator.translate(x)).mkString(", ")
+    val eltsStr = elts.map((x) => makeArrayPart(x)).mkString(", ")
     val actStr = translateAct(check.actual)
     out.puts(s"COMPARE_ARRAY($elTypeName, $actStr, $eltsStr);")
+  }
+
+  def makeArrayPart(e: Ast.expr) : String = {
+    e match {
+      case Ast.expr.Str(_) => s"ks_string_from_cstr(${translator.translate(e)})"
+      case _ => translator.translate(e)
+    }
   }
 
   override def indentStr: String = "    "
