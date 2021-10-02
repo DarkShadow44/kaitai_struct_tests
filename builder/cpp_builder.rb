@@ -99,7 +99,7 @@ class CppBuilder < PartialBuilder
     when :make_posix
       r = run_and_tee(
         {"LC_ALL" => "en_US.UTF-8"},
-        ["make", "-j8", "-k"],
+        ["make", "-j16", "-k"],
         abs_log_file
       )
     when :msbuild_windows
