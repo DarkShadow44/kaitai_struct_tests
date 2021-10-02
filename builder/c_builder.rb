@@ -10,7 +10,7 @@ class CBuilder < CppBuilder
   end
 
   def list_disposable_files
-    list = Dir.glob("#{@cpp_spec_dir}/**/*.cpp") + Dir.glob("#{@src_dir}/*.cpp") + Dir.glob("#{@cpp_spec_dir}/**/*.c") + Dir.glob("#{@src_dir}/*.c")
+    list = Dir.glob("#{@cpp_spec_dir}/**/*.c") + Dir.glob("#{@src_dir}/*.c") +  Dir.glob("#{@cpp_spec_dir}/**/*.cpp") + Dir.glob("#{@src_dir}/*.cpp")
     list.map { |x|
       r = File.absolute_path(x)
 
