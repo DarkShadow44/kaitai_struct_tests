@@ -30,8 +30,8 @@ inline bool operator==(const ks_bytes b1, const ks_bytes b2)
     uint8_t* data2;
     uint64_t length1, length2;
 
-    ks_bytes_get_length(&b1, &length1);
-    ks_bytes_get_length(&b2, &length2);
+    length1 = ks_bytes_get_length(&b1);
+    length2 = ks_bytes_get_length(&b2);
 
     if (length1 != length2)
         return false;
@@ -62,7 +62,7 @@ inline std::ostream& operator<<(std::ostream& out, const ks_bytes b)
     uint64_t length;
     std::stringstream ss;
 
-    ks_bytes_get_length(&b, &length);
+    length = ks_bytes_get_length(&b);
     data = (uint8_t*)malloc(length);
     ks_bytes_get_data(&b, data);
 

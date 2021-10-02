@@ -43,7 +43,7 @@ class CSG(spec: TestSpec, provider: ClassTypeProvider) extends BaseGenerator(spe
     out.puts("int error;")
     out.puts("ks_config_init(&config);")
     out.puts("FILE* file = fopen(\"src/" + spec.data + "\", \"r\");")
-    out.puts("ks_stream_init_from_file(&stream, file, &config);")
+    out.puts("stream = ks_stream_create_from_file(file, &config);")
     out.puts(s"error = ksx_read_${className}_from_stream(&stream, &data);")
   }
 
