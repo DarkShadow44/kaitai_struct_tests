@@ -23,7 +23,7 @@ set(PREREQ_PATH prereq)
 include(${INC_PATH})
 
 set(PREREQ_SOURCES
-	${PREREQ_PATH}/operators.cpp
+	${PREREQ_PATH}/custom.c
 )
 
 set(RUNTIME_SOURCES
