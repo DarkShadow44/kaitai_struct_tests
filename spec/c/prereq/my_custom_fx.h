@@ -3,12 +3,6 @@
 
 #include <kaitaistruct.h>
 
-class my_custom_fx_t : public kaitai::custom_decoder {
-public:
-    my_custom_fx_t(int p_key, bool p_flag, std::string p_some_bytes);
-    std::string decode(std::string src);
-private:
-    int key;
-};
+ks_custom_decoder my_custom_fx_create(int p_key, int p_flag, ks_bytes* p_some_bytes);
 
-#endif  // MY_CUSTOM_FX_H_
+#endif

@@ -1,60 +1,49 @@
 #include <kaitaistruct.h>
 
-static ks_bytes* custom_fx_no_args_decode(void*userdata, ks_bytes* src) {
-    int length = ks_bytes_get_length(src);
-    char* data = calloc(1, length + 3);
+static ks_bytes* decode1(void*userdata, ks_bytes* src)
+{
+    int length = ks_bytes_get_length(src) + 2;
+    char* data = calloc(1, length);
     ks_bytes_get_data(src + 1, data);
 
     data[0] = '_';
-    data[length + 1] = '_';
+    data[length - 1] = '_';
 
-    return ks_bytes_create(data, length + 2);
+    return ks_bytes_create(data, length);
 }
 
-ks_custom_decoder custom_fx_no_args_create(void) {
+ks_custom_decoder custom_fx_no_args_create(void)
+{
     ks_custom_decoder ret = {0};
-    ret.decode = custom_fx_no_args_decode;
+    ret.decode = decode1;
     return ret;
 }
 
-/*
-#include "custom_fx.h"
-
-nested_t::deeply_t::custom_fx_t::custom_fx_t(int p_key) {
+ks_custom_decoder custom_fx_create(int p_key)
+{
+    ks_custom_decoder ret = {0};
+    ret.decode = decode1;
+    return ret;
 }
 
-std::string nested_t::deeply_t::custom_fx_t::decode(std::string src) {
-    return "_" + src + "_";
+static ks_bytes* decode2(void* userdata, ks_bytes* src) {
+    int i;
+    int key = *(int*)userdata;
+    int len = ks_bytes_get_length(src);
+    char* data = calloc(1, len);
+    ks_bytes_get_data(src, data);
+
+    for (i = 0; i < len; i++)
+        data[i] = data[i] + key;
+
+    return ks_bytes_create(data, len);
 }
 
-
-#include "my_custom_fx.h"
-
-my_custom_fx_t::my_custom_fx_t(int p_key, bool p_flag, std::string p_some_bytes) {
-    key = p_flag ? p_key : -p_key;
+ks_custom_decoder my_custom_fx_create(int p_key, int p_flag, ks_bytes* p_some_bytes)
+{
+    ks_custom_decoder ret = {0};
+    ret.userdata = malloc(sizeof(int));
+    *((int*)ret.userdata) = p_flag ? p_key : -p_key;
+    ret.decode = decode2;
+    return ret;
 }
-
-std::string my_custom_fx_t::decode(std::string src) {
-    int len = src.length();
-    std::string dst(len, ' ');
-
-    for (int i = 0; i < len; i++)
-        dst[i] = src[i] + key;
-
-    return dst;
-}
-
-my_custom_fx_t::my_custom_fx_t(int p_key, bool p_flag, std::string p_some_bytes) {
-    key = p_flag ? p_key : -p_key;
-}
-
-std::string my_custom_fx_t::decode(std::string src) {
-    int len = src.length();
-    std::string dst(len, ' ');
-
-    for (int i = 0; i < len; i++)
-        dst[i] = src[i] + key;
-
-    return dst;
-}
-*/
