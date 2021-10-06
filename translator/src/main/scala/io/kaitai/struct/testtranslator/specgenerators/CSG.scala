@@ -38,13 +38,13 @@ class CSG(spec: TestSpec, provider: ClassTypeProvider) extends BaseGenerator(spe
 
   def runParseCommon1(): Unit = {
     out.puts(s"ksx_$className data;")
-    out.puts("ks_stream stream;")
+    out.puts("ks_stream* stream;")
     out.puts("ks_config config;")
     out.puts("int error;")
     out.puts("ks_config_init(&config);")
     out.puts("FILE* file = fopen(\"src/" + spec.data + "\", \"r\");")
     out.puts("stream = ks_stream_create_from_file(file, &config);")
-    out.puts(s"error = ksx_read_${className}_from_stream(&stream, &data);")
+    out.puts(s"error = ksx_read_${className}_from_stream(stream, &data);")
   }
 
   override def footer() = {
@@ -75,16 +75,9 @@ class CSG(spec: TestSpec, provider: ClassTypeProvider) extends BaseGenerator(spe
 
   def trueArrayAssert(check: TestAssert, elType: DataType, elts: Seq[Ast.expr]): Unit = {
     val elTypeName = CCompiler.kaitaiType2NativeType(elType)
-    val eltsStr = elts.map((x) => makeArrayPart(x)).mkString(", ")
+    val eltsStr = elts.map(translator.translate).mkString(", ")
     val actStr = translateAct(check.actual)
     out.puts(s"COMPARE_ARRAY($elTypeName, $actStr, $eltsStr);")
-  }
-
-  def makeArrayPart(e: Ast.expr) : String = {
-    e match {
-      case Ast.expr.Str(_) => s"ks_string_from_cstr(${translator.translate(e)})"
-      case _ => translator.translate(e)
-    }
   }
 
   override def indentStr: String = "    "
