@@ -29,6 +29,7 @@ class CSG(spec: TestSpec, provider: ClassTypeProvider) extends BaseGenerator(spe
   override def runParse(): Unit = {
     runParseCommon1()
     out.puts(s"BOOST_CHECK_EQUAL(error, 0);")
+    out.puts("if (error != 0) return;")
   }
 
   override def runParseExpectError(exception: KSError): Unit = {
@@ -43,6 +44,8 @@ class CSG(spec: TestSpec, provider: ClassTypeProvider) extends BaseGenerator(spe
     out.puts("int error;")
     out.puts("ks_config_init(&config);")
     out.puts("FILE* file = fopen(\"src/" + spec.data + "\", \"r\");")
+    out.puts("BOOST_CHECK_EQUAL(file != 0, 1);")
+    out.puts("if (!file) return;")
     out.puts("stream = ks_stream_create_from_file(file, &config);")
     out.puts(s"error = ksx_read_${className}_from_stream(stream, &data);")
   }
