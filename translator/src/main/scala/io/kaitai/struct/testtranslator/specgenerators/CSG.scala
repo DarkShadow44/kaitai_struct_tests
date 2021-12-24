@@ -4,6 +4,7 @@ import io.kaitai.struct.datatype.{DataType, KSError}
 import io.kaitai.struct.exprlang.Ast
 import io.kaitai.struct.languages.CCompiler
 import io.kaitai.struct.testtranslator.{Main, TestAssert, TestSpec}
+import io.kaitai.struct.datatype.DataType._
 import io.kaitai.struct.translators.CTranslator
 import io.kaitai.struct.{ClassTypeProvider, RuntimeConfig}
 import io.kaitai.struct.languages.components.CppImportList
@@ -57,9 +58,13 @@ class CSG(spec: TestSpec, provider: ClassTypeProvider) extends BaseGenerator(spe
   }
 
   def simpleAssert(check: TestAssert): Unit = {
+    val ptr = translator.detectType(check.expected) match {
+      case t: StrType => "*"
+      case _ => ""
+    }
     val actStr = translateAct(check.actual)
     val expStr = translator.translate(check.expected)
-    out.puts(s"BOOST_CHECK_EQUAL($actStr, $expStr);")
+    out.puts(s"BOOST_CHECK_EQUAL($ptr$actStr, $ptr$expStr);")
   }
 
   override def floatAssert(check: TestAssert): Unit = {
