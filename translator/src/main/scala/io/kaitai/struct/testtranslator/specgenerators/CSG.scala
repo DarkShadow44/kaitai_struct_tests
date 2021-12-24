@@ -12,7 +12,7 @@ class CSG(spec: TestSpec, provider: ClassTypeProvider) extends BaseGenerator(spe
   val compiler = new CCompiler(provider, RuntimeConfig())
   val className = spec.id.toLowerCase()
   val cppImportList = new CppImportList
-  val translator = new CTranslator(provider, cppImportList)
+  val translator = new CTranslator(provider, cppImportList, false)
 
   override def fileName(name: String): String = s"test_$name.cpp"
 
