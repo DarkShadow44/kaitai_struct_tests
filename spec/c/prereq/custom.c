@@ -4,12 +4,12 @@ static ks_bytes* decode1(void*userdata, ks_bytes* src)
 {
     int length = ks_bytes_get_length(src) + 2;
     char* data = calloc(1, length);
-    ks_bytes_get_data(src + 1, data);
+    ks_bytes_get_data(src, data + 1);
 
     data[0] = '_';
     data[length - 1] = '_';
 
-    return ks_bytes_create(data, length);
+    return ks_bytes_create(src, data, length);
 }
 
 ks_custom_decoder custom_fx_no_args_create(void)
@@ -36,7 +36,7 @@ static ks_bytes* decode2(void* userdata, ks_bytes* src) {
     for (i = 0; i < len; i++)
         data[i] = data[i] + key;
 
-    return ks_bytes_create(data, len);
+    return ks_bytes_create(src, data, len);
 }
 
 ks_custom_decoder my_custom_fx_create(int p_key, int p_flag, ks_bytes* p_some_bytes)
