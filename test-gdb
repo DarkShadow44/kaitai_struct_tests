@@ -1,0 +1,2 @@
+clear
+gdb /home/fabian/Programming/kaitai_struct/tests/compiled/c/bin/ks_tests
