@@ -60,6 +60,7 @@ class CSG(spec: TestSpec, provider: ClassTypeProvider) extends BaseGenerator(spe
   def simpleAssert(check: TestAssert): Unit = {
     val ptr = translator.detectType(check.expected) match {
       case t: StrType => "*"
+      case t: BytesType => "*"
       case _ => ""
     }
     val actStr = translateAct(check.actual)
@@ -85,7 +86,12 @@ class CSG(spec: TestSpec, provider: ClassTypeProvider) extends BaseGenerator(spe
     val elTypeName = CCompiler.kaitaiType2NativeType(elType)
     val eltsStr = elts.map(translator.translate).mkString(", ")
     val actStr = translateAct(check.actual)
-    out.puts(s"COMPARE_ARRAY($elTypeName, $actStr, $eltsStr);")
+    elType match {
+      case t: StrType =>
+        out.puts(s"COMPARE_ARRAY_POINTER(ks_string, $actStr, $eltsStr);")
+      case _ =>
+        out.puts(s"COMPARE_ARRAY($elTypeName, $actStr, $eltsStr);")
+    }
   }
 
   override def indentStr: String = "    "

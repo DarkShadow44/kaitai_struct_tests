@@ -95,3 +95,28 @@ inline std::ostream& operator<<(std::ostream& out, const ks_bytes b)
             temp2.begin(), temp2.end()          \
         );                                      \
     }
+
+#define COMPARE_ARRAY_POINTER(typ, act, ...)            \
+    {                                                   \
+        typ* temp1[] = {__VA_ARGS__};                   \
+        std::vector<typ*> temp2(                        \
+            temp1,                                      \
+            temp1 + sizeof(temp1) / sizeof(typ*)        \
+        );                                              \
+        std::vector<typ*> temp3(                        \
+            act->data,                                  \
+            act->data + act->size                       \
+        );                                              \
+        std::vector<typ> temp4;                         \
+        for (uint32_t i = 0; i < temp2.size(); i++) {   \
+            temp4.push_back(*temp2[i]);                 \
+        }                                               \
+        std::vector<typ> temp5;                         \
+        for (uint32_t i = 0; i < temp3.size(); i++) {   \
+            temp5.push_back(*temp3[i]);                 \
+        }                                               \
+        BOOST_CHECK_EQUAL_COLLECTIONS(                  \
+            temp5.begin(), temp5.end(),                 \
+            temp4.begin(), temp4.end()                  \
+        );                                              \
+    }
