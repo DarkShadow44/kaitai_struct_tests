@@ -23,6 +23,10 @@ class CSG(spec: TestSpec, provider: ClassTypeProvider) extends BaseGenerator(spe
   cppImportList.addSystem("stdio.h")
 
   override def header() = {
+    out.puts("static void log(const char* text) {")
+    out.puts("    printf(text);")
+    out.puts("}")
+    out.puts
     out.puts(s"BOOST_AUTO_TEST_CASE(test_${spec.id}) {")
     out.inc
   }
@@ -43,7 +47,7 @@ class CSG(spec: TestSpec, provider: ClassTypeProvider) extends BaseGenerator(spe
     out.puts("ks_stream* stream;")
     out.puts("ks_config config;")
     out.puts("int error;")
-    out.puts("ks_config_init(&config);")
+    out.puts("ks_config_init(&config, log);")
     out.puts("FILE* file = fopen(\"src/" + spec.data + "\", \"r\");")
     out.puts("BOOST_CHECK_EQUAL(file != 0, 1);")
     out.puts("if (!file) return;")
