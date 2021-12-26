@@ -100,6 +100,7 @@ class CSG(spec: TestSpec, provider: ClassTypeProvider) extends BaseGenerator(spe
     "// " + AUTOGEN_COMMENT + "\n\n" +
       "#define KS_USE_ZLIB\n" +
       "#define KS_DEPEND_ON_INTERNALS\n" +
+      "#define KS_USE_ICONV\n" +
       "extern \"C\" {\n" +
       "#include \"" + spec.id + ".h\"\n" +
       "}\n" +
