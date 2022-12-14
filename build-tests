@@ -15,5 +15,5 @@ sbt publishLocal
 cd ../tests
 ./spec_kst_to_all -t "$1" --all-specs
 cd spec
-mv "ks/out/$1/tests"/* "$1/"
+mv "ks/out/$1"/* "$1/"
 rm -rf ks/out
