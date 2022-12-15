@@ -43,7 +43,7 @@ class CSG(spec: TestSpec, provider: ClassTypeProvider) extends BaseGenerator(spe
   }
 
   def runParseCommon1(): Unit = {
-    out.puts(s"ksx_$className data;")
+    out.puts(s"ksx_$className* data;")
     out.puts("ks_stream* stream;")
     out.puts("ks_config config;")
     out.puts("int error;")
@@ -52,7 +52,8 @@ class CSG(spec: TestSpec, provider: ClassTypeProvider) extends BaseGenerator(spe
     out.puts("BOOST_CHECK_EQUAL(file != 0, 1);")
     out.puts("if (!file) return;")
     out.puts("stream = ks_stream_create_from_file(file, &config);")
-    out.puts(s"error = ksx_read_${className}_from_stream(stream, &data);")
+    out.puts(s"data = ksx_read_${className}_from_stream(stream, &error);")
+    out.puts(s"(void)data;")
   }
 
   override def footer() = {
@@ -112,7 +113,7 @@ class CSG(spec: TestSpec, provider: ClassTypeProvider) extends BaseGenerator(spe
       out.result
   }
 
-  def fixup(s: String) : String = s.replace("->" + Main.INIT_OBJ_NAME, "").replaceFirst("->", ".")
+  def fixup(s: String) : String = s.replace("->" + Main.INIT_OBJ_NAME, "")
 
   def translateAct(x: Ast.expr) = {
     fixup(translator.translate(x))
