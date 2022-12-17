@@ -45,19 +45,21 @@ class CSG(spec: TestSpec, provider: ClassTypeProvider) extends BaseGenerator(spe
   def runParseCommon1(): Unit = {
     out.puts(s"ksx_$className* data;")
     out.puts("ks_stream* stream;")
-    out.puts("ks_config config;")
-    out.puts("int error;")
-    out.puts("ks_config_init(&config, log);")
+    out.puts("ks_config* config;")
+    out.puts("ks_error error;")
+    out.puts("config = ks_config_create(log);")
     out.puts("FILE* file = fopen(\"src/" + spec.data + "\", \"r\");")
     out.puts("BOOST_CHECK_EQUAL(file != 0, 1);")
     out.puts("if (!file) return;")
-    out.puts("stream = ks_stream_create_from_file(file, &config);")
+    out.puts("stream = ks_stream_create_from_file(file, config);")
     out.puts(s"data = ksx_read_${className}_from_stream(stream, &error);")
     out.puts(s"(void)data;")
   }
 
   override def footer() = {
     out.puts
+    out.puts("ks_stream_destroy(stream);")
+    out.puts("ks_config_destroy(config);")
     out.dec
     out.puts("}")
   }
