@@ -4,5 +4,6 @@
 #include <kaitaistruct.h>
 
 ks_custom_decoder custom_fx_no_args_create(void);
+void custom_fx_no_args_destroy(ks_custom_decoder decoder);
 
 #endif
