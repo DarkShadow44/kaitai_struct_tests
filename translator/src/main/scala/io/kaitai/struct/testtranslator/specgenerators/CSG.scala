@@ -24,7 +24,7 @@ class CSG(spec: TestSpec, provider: ClassTypeProvider) extends BaseGenerator(spe
 
   override def header() = {
     out.puts("static void log(const char* text) {")
-    //out.puts("    printf(text);")
+    out.puts("    printf(text);")
     out.puts("}")
     out.puts
     out.puts(s"BOOST_AUTO_TEST_CASE(test_${spec.id}) {")
@@ -58,7 +58,6 @@ class CSG(spec: TestSpec, provider: ClassTypeProvider) extends BaseGenerator(spe
 
   override def footer() = {
     out.puts
-    out.puts("ks_stream_destroy(stream);")
     out.puts("ks_config_destroy(config);")
     out.dec
     out.puts("}")
